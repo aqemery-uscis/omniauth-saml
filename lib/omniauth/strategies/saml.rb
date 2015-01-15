@@ -11,12 +11,14 @@ module OmniAuth
 
       def request_phase
         options[:assertion_consumer_service_url] ||= callback_url
+
         runtime_request_parameters = options.delete(:idp_sso_target_url_runtime_params)
 
         additional_params = {}
         runtime_request_parameters.each_pair do |request_param_key, mapped_param_key|
           additional_params[mapped_param_key] = request.params[request_param_key.to_s] if request.params.has_key?(request_param_key.to_s)
         end if runtime_request_parameters
+
 
         authn_request = OneLogin::RubySaml::Authrequest.new
         settings = OneLogin::RubySaml::Settings.new(options)
@@ -75,9 +77,10 @@ module OmniAuth
           # omniauth does not set the strategy on the other_phase
           @env['omniauth.strategy'] ||= self
           setup_phase
-
+          
           response = OneLogin::RubySaml::Metadata.new
           settings = OneLogin::RubySaml::Settings.new(options)
+
           Rack::Response.new(response.generate(settings), 200, { "Content-Type" => "application/xml" }).finish
         else
           call_app!
@@ -88,8 +91,11 @@ module OmniAuth
 
       info do
         {
-          :email => @attributes[:email],
-          :uuid => @attributes[:uuid]
+          :email => @attributes[:emailAddress],
+          :cis_uuid => @attributes[:cisUUID],
+          :groups => @attributes[:groups],
+          :first_name => @attributes[:sn],
+          :last_name => @attributes[:givenName]
         }
       end
 
