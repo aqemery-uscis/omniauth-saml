@@ -95,8 +95,8 @@ module OmniAuth
           :email => @attributes[:emailAddress],
           :cis_uuid => @attributes[:cisUUID],
           :groups => @attributes[:groups],
-          :first_name => @attributes[:sn],
-          :last_name => @attributes[:givenName]
+          :first_name => @attributes[:givenName],
+          :last_name => @attributes[:sn]
         }
       end
 
