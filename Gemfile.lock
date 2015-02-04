@@ -1,15 +1,16 @@
+GIT
+  remote: git://github.com/amoose/ruby-saml.git
+  revision: fa9e08c8e8341da57003df0fbc7dee9569cda4b5
+  specs:
+    ruby-saml (0.8.1)
+      nokogiri (>= 1.5.0)
+      uuid (~> 2.3)
+
 PATH
   remote: .
   specs:
     omniauth-saml (1.3.0)
       omniauth (~> 1.2)
-
-PATH
-  remote: ../ruby-saml
-  specs:
-    ruby-saml (0.8.1)
-      nokogiri (>= 1.5.0)
-      uuid (~> 2.3)
 
 GEM
   remote: https://rubygems.org/
@@ -26,7 +27,7 @@ GEM
       systemu (~> 2.6.2)
     mini_portile (0.6.2)
     multi_json (1.3.7)
-    nokogiri (1.6.5)
+    nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
     omniauth (1.2.2)
       hashie (>= 1.2, < 4)
