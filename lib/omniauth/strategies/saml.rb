@@ -24,7 +24,15 @@ module OmniAuth
         authn_request = OneLogin::RubySaml::Authrequest.new
         settings = OneLogin::RubySaml::Settings.new(options)
 
-        redirect(authn_request.create(settings, additional_params))
+        # redirect(authn_request.create(settings, additional_params))
+        idp_sso_target_url = authn_request.create(settings, additional_params)
+        saml_request_doc = authn_request.create_document(settings)
+
+        html = build_html(idp_sso_target_url, 'SAMLRequest', saml_request_doc)
+        
+        Rack::Response.new(html, 200, { "Content-Type" => "text/html" }).finish
+
+        # redirect idp_sso_target_url
       end
 
       def callback_phase
@@ -86,6 +94,31 @@ module OmniAuth
         else
           call_app!
         end
+      end
+
+      def build_html(action_url, type, message)
+        string = <<EOF  
+<html>
+<head>
+  <meta charset="utf-8" />
+</head>
+<body onload="document.forms[0].submit();" style="visibility:hidden;">
+  <form action="%%action_url%%" method="POST">
+  <input type="hidden" value="%%message%%" name="%%type%%" />
+  <input type="submit" value="Submit" />
+</form>
+</body>
+</html>
+EOF
+
+
+        html = REXML::Document.new string
+        raw_html = html.to_s
+        raw_html.gsub!('%%action_url%%', action_url)
+        raw_html.gsub!('%%type%%', type)
+        raw_html.gsub!('%%message%%', message.to_s)
+
+        raw_html
       end
 
       uid { @name_id }
