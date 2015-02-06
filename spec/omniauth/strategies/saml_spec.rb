@@ -21,7 +21,8 @@ describe OmniAuth::Strategies::SAML, :type => :strategy do
       :idp_sso_target_url                 => "https://idp.sso.target_url/signon/29490",
       :idp_cert_fingerprint               => "C1:59:74:2B:E8:0C:6C:A9:41:0F:6E:83:F6:D1:52:25:45:58:89:FB",
       :idp_sso_target_url_runtime_params  => {:original_param_key => :mapped_param_key},
-      :name_identifier_format             => "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+      :name_identifier_format             => "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+      :assertion_consumer_service_binding => "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-REDIRECT"
     }
   end
   let(:strategy) { [OmniAuth::Strategies::SAML, saml_options] }
@@ -75,6 +76,7 @@ describe OmniAuth::Strategies::SAML, :type => :strategy do
       end
 
       it "should set the raw info to all attributes" do
+
         auth_hash['extra']['raw_info'].to_hash.should == {
           'first_name'   => 'Rajiv',
           'last_name'    => 'Manglani',
