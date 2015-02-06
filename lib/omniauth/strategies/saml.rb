@@ -24,11 +24,12 @@ module OmniAuth
         authn_request = OneLogin::RubySaml::Authrequest.new
         settings = OneLogin::RubySaml::Settings.new(options)
 
-        idp_sso_target_url = authn_request.create(settings, additional_params)
+        
 
         if settings.assertion_consumer_service_binding and 
           settings.assertion_consumer_service_binding.match(/HTTP-POST/)
             idp_sso_target_url = authn_request.create_post(settings, additional_params)
+            saml_request_doc = authn_request.create_document(settings)
             html = build_html(idp_sso_target_url, 'SAMLRequest', saml_request_doc)
             Rack::Response.new(html, 200, { "Content-Type" => "text/html" }).finish
         else
