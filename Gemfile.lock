@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/amoose/ruby-saml.git
-  revision: a8adaca4d82a05655e076ee686131a5999e0d242
+  revision: 0980912a242d5c0eca85db85ba866db87491f859
   specs:
     ruby-saml (0.9)
       nokogiri (>= 1.5.0)
