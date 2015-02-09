@@ -20,12 +20,11 @@ module OmniAuth
           additional_params[mapped_param_key] = request.params[request_param_key.to_s] if request.params.has_key?(request_param_key.to_s)
         end if runtime_request_parameters
 
-
         authn_request = OneLogin::RubySaml::Authrequest.new
         settings = OneLogin::RubySaml::Settings.new(options)
 
-        if settings.assertion_consumer_service_binding and 
-          settings.assertion_consumer_service_binding.match(/HTTP-POST/)
+        if settings.try(:single_signon_service_binding) and 
+          settings.single_signon_service_binding.match(/HTTP-POST/)
             idp_sso_target_url = settings.idp_sso_target_url
             saml_request_doc = authn_request.create_document(settings)
             html = build_html(idp_sso_target_url, 'SAMLRequest', saml_request_doc)
@@ -61,7 +60,7 @@ module OmniAuth
           raise OmniAuth::Strategies::SAML::ValidationError.new("SAML response missing 'name_id'")
         end
 
-        response.validate!
+        response.validate(true)
 
         super
       rescue OmniAuth::Strategies::SAML::ValidationError
