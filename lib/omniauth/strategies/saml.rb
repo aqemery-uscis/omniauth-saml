@@ -41,14 +41,14 @@ module OmniAuth
         end
 
         # Call a fingerprint validation method if there's one
-        if options.idp_cert_fingerprint_validator
-          fingerprint_exists = options.idp_cert_fingerprint_validator[response_fingerprint]
-          unless fingerprint_exists
-            raise OmniAuth::Strategies::SAML::ValidationError.new("Non-existent fingerprint")
-          end
-          # id_cert_fingerprint becomes the given fingerprint if it exists
-          options.idp_cert_fingerprint = fingerprint_exists
-        end
+        # if options.idp_cert_fingerprint_validator
+        #   fingerprint_exists = options.idp_cert_fingerprint_validator[response_fingerprint]
+        #   unless fingerprint_exists
+        #     raise OmniAuth::Strategies::SAML::ValidationError.new("Non-existent fingerprint")
+        #   end
+        #   # id_cert_fingerprint becomes the given fingerprint if it exists
+        #   options.idp_cert_fingerprint = fingerprint_exists
+        # end
 
         response = OneLogin::RubySaml::Response.new(request.params['SAMLResponse'], options)
         response.settings = OneLogin::RubySaml::Settings.new(options)
